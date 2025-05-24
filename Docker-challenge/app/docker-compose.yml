@@ -1,16 +1,19 @@
 version: '3.8'
 
 services:
+  # Building web container and setting port
   web:
     build: .
     expose:
     - "5002"
     depends_on:
     - redisdb
+    # Setting up environment variables
     environment:
     - REDIS_HOST=redisdb
     - REDIS_PORT=6379
   
+  # Creating Redis container with ports and persistent volume
   redisdb:
     image: "redis:latest"
     ports:
@@ -18,6 +21,7 @@ services:
     volumes:
       - redisdb-data:/data
 
+  # Setting up nginx container
   nginx:
     image: nginx:latest
     ports:
@@ -27,5 +31,6 @@ services:
     depends_on:
       - web
 
+# Creating volume for persistent storage
 volumes:
   redisdb-data: 
